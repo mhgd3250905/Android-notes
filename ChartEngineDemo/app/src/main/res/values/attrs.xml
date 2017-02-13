@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="styleTextColor" format="color|reference"></attr>
+    <attr name="mainBackground" format="color|reference"></attr>
+    <attr name="styleTextColor55" format="color|reference"></attr>
+    <attr name="styleBackgroundIconColor" format="color|reference"></attr>
+    <attr name="styleCardBackground" format="color|reference"></attr>
+</resources>
