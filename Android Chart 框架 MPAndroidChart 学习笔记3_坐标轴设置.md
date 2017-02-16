@@ -51,3 +51,43 @@
         //设置Y轴的值之间的最小间隔。这可以用来避免价值复制当放大到一个地步，小数设置轴不再数允许区分两轴线之间的值。
         mAxis.setGranularity(10f);
     }
+
+## 3.调整轴的造型 ##
+
+	/* @描述 调整轴的造型 */
+    private void modifyingAxis(AxisBase mAxis){
+        //设置坐标轴标签文字颜色
+        mAxis.setTextColor(Color.GREEN);
+        //设置坐标轴标签文字大小
+        mAxis.setTextSize(10f);
+        //设置坐标轴标签文字样式
+        mAxis.setTypeface(Typeface.DEFAULT_BOLD);
+        //设置此轴网格线颜色
+        mAxis.setGridColor(Color.RED);
+        //设置此轴网格线宽度
+        mAxis.setGridLineWidth(0.5f);
+        //设置坐标轴的颜色
+        mAxis.setAxisLineColor(Color.RED);
+        //设置坐标轴的宽度
+        mAxis.setAxisLineWidth(1f);
+        //使用虚线组成的网格线
+        //参数：linelength：虚线长度
+        // spacelength:虚线间隔长度
+        // phase：虚线出发点（从第一根虚线的哪里出发）
+        mAxis.enableGridDashedLine(40f,2f,20f);
+    }
+
+## 4.设置一个限制的辅助线 ##
+
+- 在坐标轴上添加一个与**指定坐标轴垂直**的辅助线
+- 
+	//设置一个限制的线
+    private void addLimitLine(AxisBase mAxis){
+        LimitLine ll = new LimitLine(10f, "Critical Blood Pressure");
+        ll.setLineColor(Color.RED);
+        ll.setLineWidth(4f);
+        ll.setTextColor(Color.BLACK);
+        ll.setTextSize(12f);
+        mAxis.addLimitLine(ll);
+    }
+
