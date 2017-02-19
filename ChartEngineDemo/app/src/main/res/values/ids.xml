@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="fl_Home" type="id">home页面的fragment容器</item>
+    <item name="vp_home" type="id">viewpager</item>
+    <item name="tl_home" type="id">TabLayout</item>
+    <item name="chart_bar" type="id">chart_bar</item>
 </resources>

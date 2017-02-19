@@ -1,7 +1,6 @@
 package com.immoc.ww.greendaodemo.fragment;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,11 +9,12 @@ import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.immoc.ww.greendaodemo.R;
 
 import java.util.ArrayList;
@@ -27,8 +27,7 @@ import static com.github.mikephil.charting.components.YAxis.YAxisLabelPosition.O
 import static com.immoc.ww.greendaodemo.R.id.chart;
 
 
-public class ChartFeagment extends Fragment{
-
+public class LineChartFragment extends Fragment{
 
     @Bind(chart)
     LineChart mChart;
@@ -36,7 +35,7 @@ public class ChartFeagment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_chart_feagment, container, false);
+        View view = inflater.inflate(R.layout.fragment_line_chart_fragment, container, false);
         ButterKnife.bind(this, view);
         initUI();
         return view;
@@ -46,10 +45,12 @@ public class ChartFeagment extends Fragment{
     private void initUI() {
 
         List<Entry> entries = new ArrayList<Entry>();
+        List<Entry> entries2 = new ArrayList<Entry>();
 
         for (int i = 0; i < 20; i++) {
             // turn your data into Entry objects
             entries.add(new Entry(i, 2*i));
+            //entries2.add(new Entry(i,i));
         }
 
         LineDataSet dataSet = new LineDataSet(entries, "Test"); // add entries to dataset
@@ -60,10 +61,23 @@ public class ChartFeagment extends Fragment{
         dataSet.setDrawHighlightIndicators(true);
         //设置高亮提示先颜色
         dataSet.setHighLightColor(Color.RED);
-
         dataSet.setColor(R.color.colorAccent);
-        dataSet.setValueTextColor(R.color.colorPrimary); // styling, ...
+        dataSet.setValueTextColor(R.color.colorPrimary);
+        dataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+//        LineDataSet dataSet2 = new LineDataSet(entries2, "Test2"); // add entries to dataset
+//        //数据内容是否可以高亮选择
+//        dataSet2.setHighlightEnabled(true);
+//        //是否显示高亮提示线
+//        dataSet2.setDrawHighlightIndicators(true);
+//        //设置高亮提示先颜色
+//        dataSet2.setHighLightColor(Color.RED);
+//        dataSet2.setColor(R.color.colorAccent);
+//        dataSet2.setValueTextColor(R.color.colorPrimary); // styling, ...
+//        dataSet2.setAxisDependency(YAxis.AxisDependency.RIGHT);
+
         LineData lineData = new LineData(dataSet);
+
         mChart.setData(lineData);
 
         //启用、禁用交互
@@ -78,10 +92,16 @@ public class ChartFeagment extends Fragment{
         drawAxis(mChart.getAxisRight());
         //自定义轴的范围
         customizeRange(mChart.getAxisLeft());
-        //调整轴的造型
-        modifyingAxis(mChart.getAxisLeft());
-        //添加一个辅助线
-        addLimitLine(mChart.getAxisLeft());
+        //X轴基本设置
+        CustomizingXAxis(mChart.getXAxis());
+        //Y轴基本设置
+        CustomizingYAxis(mChart.getAxisLeft());
+        CustomizingYAxis(mChart.getAxisRight());
+
+        //自定义XAxis标签内容
+        customizeXLable(mChart.getXAxis());
+        //mChart.setOnChartGestureListener(this);
+
 
         mChart.invalidate();
     }
@@ -132,11 +152,11 @@ public class ChartFeagment extends Fragment{
         //设置是否启用轴线：如果关闭那么就默认没有轴线/标签/网格线
         mAxis.setEnabled(true);
         //设置是否开启绘制轴的标签
-        mAxis.setDrawLabels(false);
+        mAxis.setDrawLabels(true);
         //是否绘制轴线
-        mAxis.setDrawAxisLine(false);
+        mAxis.setDrawAxisLine(true);
         //是否绘制网格线
-        mAxis.setDrawGridLines(false);
+        mAxis.setDrawGridLines(true);
     }
 
     /* @描述 自定义轴的范围 */
@@ -156,7 +176,7 @@ public class ChartFeagment extends Fragment{
         //设置标签个数以及是否精确（false为模糊，true为精确）
         mAxis.setLabelCount(20,false);
         //如果设置为true，此轴将被反转，这意味着最高值将在底部，最低的顶部值。
-        mAxis.setInverted(true);
+        mAxis.setInverted(false);
         //设置轴标签应绘制的位置。无论是inside_chart或outside_chart。
         mAxis.setPosition(OUTSIDE_CHART);
         //如果设置为true那么下面方法设置最小间隔生效，默认为false
@@ -165,40 +185,49 @@ public class ChartFeagment extends Fragment{
         mAxis.setGranularity(10f);
     }
 
-    /* @描述 调整轴的造型 */
-    private void modifyingAxis(AxisBase mAxis){
-        //设置坐标轴标签文字颜色
-        mAxis.setTextColor(Color.GREEN);
-        //设置坐标轴标签文字大小
+    /* @描述 X轴基本设置 */
+    private void CustomizingXAxis(XAxis mAxis){
+        //X轴标签的倾斜角度
+        mAxis.setLabelRotationAngle(0f);
+        //设置X轴标签出现位置
+        //TOP、BOTTOM、BOTH_SIDED、TOP_INSIDE、BOTTOM_INSIDE
+        mAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        //设置标签文本格式
         mAxis.setTextSize(10f);
-        //设置坐标轴标签文字样式
-        mAxis.setTypeface(Typeface.DEFAULT_BOLD);
-        //设置此轴网格线颜色
-        mAxis.setGridColor(Color.RED);
-        //设置此轴网格线宽度
-        mAxis.setGridLineWidth(0.5f);
-        //设置坐标轴的颜色
-        mAxis.setAxisLineColor(Color.RED);
-        //设置坐标轴的宽度
-        mAxis.setAxisLineWidth(1f);
-        //使用虚线组成的网格线
-        //参数：linelength：虚线长度
-        // spacelength:虚线间隔长度
-        // phase：虚线出发点（从第一根虚线的哪里出发）
-        mAxis.enableGridDashedLine(40f,2f,20f);
+        //设置标签文本颜色
+        mAxis.setTextColor(Color.RED);
+        //是否绘制轴线
+        mAxis.setDrawAxisLine(true);
+        //是否绘制网格线
+        mAxis.setDrawGridLines(false);
+        //自定义数值格式
+        //mAxis.setValueFormatter(new MyCustomFormatter());
     }
 
-    //设置一个限制的线
-    private void addLimitLine(AxisBase mAxis){
-        LimitLine ll = new LimitLine(10f, "Critical Blood Pressure");
-        ll.setLineColor(Color.RED);
-        ll.setLineWidth(4f);
-        ll.setTextColor(Color.BLACK);
-        ll.setTextSize(12f);
-
-        mAxis.addLimitLine(ll);
+    /* @描述 Y轴基本设置 */
+    private void CustomizingYAxis(YAxis mAxis){
+        //是否启用绘制零线:设置为true后才有后面的操作
+        mAxis.setDrawZeroLine(true);
+        //设置绘制零线宽度
+        mAxis.setZeroLineWidth(5f);
+        //绘制零线颜色
+        mAxis.setZeroLineColor(Color.BLUE);
     }
 
+    /* @描述 自定义XAxis标签内容 */
+    private void customizeXLable(XAxis mAxis){
+        XAxis xAxis=mChart.getXAxis();
+        xAxis.setGranularity(1f);
+        xAxis.setValueFormatter(formatter);
+    }
+
+    //自定义XAxis Lable标签格式
+    IAxisValueFormatter formatter=new IAxisValueFormatter() {
+        @Override
+        public String getFormattedValue(float value, AxisBase axis) {
+            return (int)value+"个月";
+        }
+    };
 
 
     @Override
@@ -206,6 +235,7 @@ public class ChartFeagment extends Fragment{
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
 
 
 //    /* @描述 触摸开始（ACTION_DOWN） */

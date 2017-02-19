@@ -26,6 +26,7 @@ dependencies {
     })
 
     compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.android.support:design:25.0.0'
 
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'de.greenrobot:greendao:2.1.0'

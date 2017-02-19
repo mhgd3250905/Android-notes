@@ -2,12 +2,19 @@ package com.immoc.ww.greendaodemo;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import com.immoc.ww.greendaodemo.fragment.ChartFeagment;
+import com.immoc.ww.greendaodemo.Adapter.MyPagerAdapter;
+import com.immoc.ww.greendaodemo.fragment.BarChartFragment;
+import com.immoc.ww.greendaodemo.fragment.GroupBarChartFragment;
+import com.immoc.ww.greendaodemo.fragment.LineChartFragment;
+import com.immoc.ww.greendaodemo.fragment.PieChartFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -22,10 +29,22 @@ import www.immoc.com.Son;
 import www.immoc.com.SonDao;
 
 public class MainActivity extends AppCompatActivity {
-    @Bind(R.id.fl_Home)
-    FrameLayout mFlHome;
+    @Bind(R.id.tl_home)
+    TabLayout tlHome;
+    @Bind(R.id.vp_home)
+    ViewPager vpHome;
     @Bind(R.id.activity_main)
     RelativeLayout mActivityMain;
+
+    //    @Bind(R.id.fl_Home)
+//    FrameLayout mFlHome;
+//    @Bind(R.id.activity_main)
+//    RelativeLayout mActivityMain;
+//
+//    @Bind(R.id.tl_home)
+//    TabLayout tlHome;
+//    @Bind(R.id.vp_home)
+//    ViewPager vpHome;
     private DaoMaster master;
     private DaoSession session;
     private SQLiteDatabase db;
@@ -78,8 +97,42 @@ public class MainActivity extends AppCompatActivity {
 
     /* @描述 初始化UI */
     private void initUI() {
-        ChartFeagment chartFeagment=new ChartFeagment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fl_Home,chartFeagment).commit();
+//        LineChartFragment chartFragment = new LineChartFragment();
+//        getSupportFragmentManager().beginTransaction().replace(R.id.fl_Home, chartFragment).commit();
+
+
+        String[] TITLE = {"LineChart", "BarChart","GroupBarChart","PieChart"};
+        tlHome.setupWithViewPager(vpHome);
+
+        List<Fragment> fragmentList = new ArrayList<Fragment>();
+
+        fragmentList.add(new LineChartFragment());
+        fragmentList.add(new BarChartFragment());
+        fragmentList.add(new GroupBarChartFragment());
+        fragmentList.add(new PieChartFragment());
+
+        MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager(), fragmentList, TITLE);
+
+        vpHome.setAdapter(adapter);
+
+        //实例化TabPageIndicator然后设置ViewPager与之关联
+        tlHome.setupWithViewPager(vpHome);
+
+        //如果我们要对ViewPager设置监听，用indicator设置就行了
+        tlHome.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                vpHome.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
     }
 
     public void queryAll() {
