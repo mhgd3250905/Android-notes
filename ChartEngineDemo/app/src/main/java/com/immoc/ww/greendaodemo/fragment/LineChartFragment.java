@@ -15,6 +15,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.immoc.ww.greendaodemo.R;
 
 import java.util.ArrayList;
@@ -50,10 +51,11 @@ public class LineChartFragment extends Fragment{
         for (int i = 0; i < 20; i++) {
             // turn your data into Entry objects
             entries.add(new Entry(i, 2*i));
-            //entries2.add(new Entry(i,i));
+            entries2.add(new Entry(i,i));
         }
 
-        LineDataSet dataSet = new LineDataSet(entries, "Test"); // add entries to dataset
+        LineDataSet dataSet = new LineDataSet(entries, "LineChart_1");
+        LineDataSet dataSet2=new LineDataSet(entries2,"LineChart_2");
 
         //数据内容是否可以高亮选择
         dataSet.setHighlightEnabled(true);
@@ -64,19 +66,13 @@ public class LineChartFragment extends Fragment{
         dataSet.setColor(R.color.colorAccent);
         dataSet.setValueTextColor(R.color.colorPrimary);
         dataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+        dataSet.setColors(new int[] { R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark},getContext());
+        dataSet2.setColors(new int[] { R.color.colorPrimary, R.color.colorAccent, R.color.colorPrimaryDark}, getContext());
+        List<ILineDataSet> dataSets=new ArrayList<ILineDataSet>();
+        dataSets.add(dataSet);
+        dataSets.add(dataSet2);
 
-//        LineDataSet dataSet2 = new LineDataSet(entries2, "Test2"); // add entries to dataset
-//        //数据内容是否可以高亮选择
-//        dataSet2.setHighlightEnabled(true);
-//        //是否显示高亮提示线
-//        dataSet2.setDrawHighlightIndicators(true);
-//        //设置高亮提示先颜色
-//        dataSet2.setHighLightColor(Color.RED);
-//        dataSet2.setColor(R.color.colorAccent);
-//        dataSet2.setValueTextColor(R.color.colorPrimary); // styling, ...
-//        dataSet2.setAxisDependency(YAxis.AxisDependency.RIGHT);
-
-        LineData lineData = new LineData(dataSet);
+        LineData lineData = new LineData(dataSets);
 
         mChart.setData(lineData);
 
