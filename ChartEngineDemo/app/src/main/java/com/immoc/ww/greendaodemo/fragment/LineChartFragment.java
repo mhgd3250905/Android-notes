@@ -98,9 +98,10 @@ public class LineChartFragment extends Fragment{
         customizeXLable(mChart.getXAxis());
         //mChart.setOnChartGestureListener(this);
 
-
         mChart.invalidate();
     }
+
+
 
     /* @描述 启用、禁用交互 */
     private void interactionWithChart(LineChart chart) {

@@ -3,4 +3,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello World</string>
+    <string name="desc">设置图表右下角出现的说明文本</string>
+    <string name="Nodata">设置图表数据为空时候的文本</string>
+    <string name="centerText">设置中心文字</string>
+    <string name="customizeLegend">自定义的图例</string>
 </resources>
