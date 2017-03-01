@@ -7,4 +7,5 @@
     <string name="Nodata">设置图表数据为空时候的文本</string>
     <string name="centerText">设置中心文字</string>
     <string name="customizeLegend">自定义的图例</string>
+    <string name="add">点击动态增加数据~</string>
 </resources>

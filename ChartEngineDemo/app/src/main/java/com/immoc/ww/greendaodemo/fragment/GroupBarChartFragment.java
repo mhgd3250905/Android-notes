@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.IMarker;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.immoc.ww.greendaodemo.MyMarkView;
 import com.immoc.ww.greendaodemo.R;
 
 import java.util.ArrayList;
@@ -65,12 +67,17 @@ public class GroupBarChartFragment extends Fragment {
 
         //柱状图数据集
         BarData data = new BarData(dataSet,dataSet2);
+
+        //data.setDrawValues(false);
         //设置柱子宽度
         data.setBarWidth(barWidth);
         mChart.setData(data);//装载数据
         mChart.groupBars(0f,groupSpace,barSpace);
 
         setGeneralStyling(mChart);
+        IMarker marker= new MyMarkView(getContext(),R.layout.makerview);
+        mChart.setMarker(marker);
+        mChart.setDrawValueAboveBar(true);
 
         mChart.invalidate();//刷新
 

@@ -4,4 +4,6 @@
     <item name="vp_home" type="id">viewpager</item>
     <item name="tl_home" type="id">TabLayout</item>
     <item name="chart_bar" type="id">chart_bar</item>
+    <item name="btn_add" type="id">btn_add</item>
+    <item name="tv_content" type="id">makerView文字id</item>
 </resources>

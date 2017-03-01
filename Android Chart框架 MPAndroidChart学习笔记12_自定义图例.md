@@ -1,4 +1,4 @@
-# Android Chart框架 MPAndroidChart学习笔记12_图例
+# Android Chart框架 MPAndroidChart学习笔记12_自定义图例
 ---
 ## 1.图例基本设置 ##
 
