@@ -71,6 +71,8 @@ public class GroupBarChartFragment extends Fragment {
         //data.setDrawValues(false);
         //设置柱子宽度
         data.setBarWidth(barWidth);
+
+
         mChart.setData(data);//装载数据
         mChart.groupBars(0f,groupSpace,barSpace);
 

@@ -76,11 +76,20 @@ public class BarChartFragment extends Fragment {
         barData = new BarData(dataSets);
         //设置柱子宽度
         barData.setBarWidth(0.9f);
+        //清除数据
+        //barData.clearValues();
+        //设置高亮
+        barData.setHighlightEnabled(true);
+
+//        data.addDataSet(dataSet2);
+//        data.addDataSet(dataSet);
+
         mChart.setData(barData);//装载数据
         mChart.setFitBars(true); //X轴自适应所有柱形图
         //设置图例
         legendSetting(mChart);
 //        modifyingViewport(mChart);
+
 
         mChart.invalidate();//刷新
 

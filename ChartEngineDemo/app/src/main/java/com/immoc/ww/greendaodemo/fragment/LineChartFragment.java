@@ -74,6 +74,7 @@ public class LineChartFragment extends Fragment{
 
         LineData lineData = new LineData(dataSets);
 
+
         mChart.setData(lineData);
 
         //启用、禁用交互
