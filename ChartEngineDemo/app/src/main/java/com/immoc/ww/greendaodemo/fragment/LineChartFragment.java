@@ -68,11 +68,17 @@ public class LineChartFragment extends Fragment{
         dataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
         dataSet.setColors(new int[] { R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark},getContext());
         dataSet2.setColors(new int[] { R.color.colorPrimary, R.color.colorAccent, R.color.colorPrimaryDark}, getContext());
+        dataSet.setDrawCircles(true);
+        dataSet.setCircleRadius(20f);
+        dataSet2.setDrawCircles(false);
+
         List<ILineDataSet> dataSets=new ArrayList<ILineDataSet>();
         dataSets.add(dataSet);
         dataSets.add(dataSet2);
 
+
         LineData lineData = new LineData(dataSets);
+
 
 
         mChart.setData(lineData);

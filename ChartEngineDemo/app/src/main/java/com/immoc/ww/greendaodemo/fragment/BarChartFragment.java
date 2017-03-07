@@ -69,6 +69,8 @@ public class BarChartFragment extends Fragment {
         dataSet2.setColor(Color.RED);
         dataSet2.setBarBorderColor(Color.BLUE);
 
+        dataSet.setHighLightColor(getResources().getColor(R.color.colorAccent));
+
         List<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
         dataSets.add(dataSet);
         dataSets.add(dataSet2);
@@ -81,6 +83,7 @@ public class BarChartFragment extends Fragment {
         //设置高亮
         barData.setHighlightEnabled(true);
 
+
 //        data.addDataSet(dataSet2);
 //        data.addDataSet(dataSet);
 
@@ -90,10 +93,7 @@ public class BarChartFragment extends Fragment {
         legendSetting(mChart);
 //        modifyingViewport(mChart);
 
-
         mChart.invalidate();//刷新
-
-
     }
 
 
