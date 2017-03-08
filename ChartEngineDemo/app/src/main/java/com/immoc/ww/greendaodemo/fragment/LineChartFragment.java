@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -70,7 +71,13 @@ public class LineChartFragment extends Fragment{
         dataSet2.setColors(new int[] { R.color.colorPrimary, R.color.colorAccent, R.color.colorPrimaryDark}, getContext());
         dataSet.setDrawCircles(true);
         dataSet.setCircleRadius(20f);
+        dataSet.setCircleColor(Color.YELLOW);
+        dataSet.setCircleColorHole(Color.GREEN);
+
+
         dataSet2.setDrawCircles(false);
+        dataSet2.enableDashedLine(5f,5f,0f);
+
 
         List<ILineDataSet> dataSets=new ArrayList<ILineDataSet>();
         dataSets.add(dataSet);
@@ -78,7 +85,6 @@ public class LineChartFragment extends Fragment{
 
 
         LineData lineData = new LineData(dataSets);
-
 
 
         mChart.setData(lineData);
@@ -106,6 +112,12 @@ public class LineChartFragment extends Fragment{
         //mChart.setOnChartGestureListener(this);
 
         mChart.invalidate();
+        mChart.clearValues();
+        mChart.invalidate();
+        if (mChart.isEmpty()) {
+            Toast.makeText(getContext(), "Empty", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 

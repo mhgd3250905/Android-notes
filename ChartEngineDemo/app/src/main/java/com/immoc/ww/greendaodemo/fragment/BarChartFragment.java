@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
@@ -82,6 +83,14 @@ public class BarChartFragment extends Fragment {
         //barData.clearValues();
         //设置高亮
         barData.setHighlightEnabled(true);
+
+        //设置阴影颜色
+        dataSet2.setBarShadowColor(Color.BLACK);
+        //设置高亮条选中的透明度
+        dataSet2.setHighLightAlpha(255);
+        dataSet.setHighLightAlpha(255);
+        //为条形堆栈的不同值设置标签，如果有的话。
+        dataSet.setStackLabels(new String[]{"a","b","c","d"});
 
 
 //        data.addDataSet(dataSet2);
@@ -162,6 +171,16 @@ public class BarChartFragment extends Fragment {
 
     @OnClick(R.id.btn_add)
     public void onClick() {
+
+        if (mChart.saveToGallery("test",100)) {
+            Toast.makeText(getContext(), "图片保存成功", Toast.LENGTH_SHORT).show();
+        }
+//        Log.d("BarChartFragment", "mChart.getYMin():" + mChart.getYMin());
+//        Log.d("BarChartFragment", "mChart.getYMax():" + mChart.getYMax());
+
+//        Log.d("BarChartFragment", "mChart.getLowestVisibleX():" + mChart.getLowestVisibleX());
+//        Log.d("BarChartFragment", "mChart.getHighestVisibleX():" + mChart.getHighestVisibleX());
+
         //重置所有缩放和拖动，使图完全符合它的边界（充分放大）
 //        mChart.fitScreen();
         //经过缩放之后重新使左边从指定位置开始

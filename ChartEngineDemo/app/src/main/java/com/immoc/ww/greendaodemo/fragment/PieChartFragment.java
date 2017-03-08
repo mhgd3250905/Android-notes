@@ -47,6 +47,9 @@ public class PieChartFragment extends Fragment {
 
         PieDataSet set = new PieDataSet(entries, "Election Results");
 
+        set.setSliceSpace(10f);
+        set.setSelectionShift(50f);
+
         set.setColors(new int[]{Color.YELLOW,Color.RED,Color.BLUE,Color.GREEN});
 
         PieData data = new PieData(set);
