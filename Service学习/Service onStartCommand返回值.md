@@ -1,0 +1,38 @@
+# Service onStartCommand返回值
+
+在Android开发中，调用Context的startService方法启动Service的生命周期时，如果Android面临内存匮乏，可能会销毁掉利当前运行的Service，然后待内存充足的时候重新创建Service，Service被Android系统强制销毁并再次重建的行为就依赖于Service中的onStartCommand方法的返回值。
+
+在Service onStartCommand方法中，常用的返回值主要有三种：
+
+- START_NOT_STICKY
+- START_STICKY
+- START_REDELIVER_INTENT
+
+### 1. START_NOT_STICKY
+
+如果返回值为START_NOT_STICKY，表示Service运行的进程被Android系统强制杀掉后，不会重新创建该Service。
+
+当然如果在其被杀掉之后一段时间又调用了startService，那么该Service又将被实例化。
+
+### 2. START_STICKY
+
+如果返回值为START_STICKY，表示Service运行的进程被Android系统强制杀掉之后，Android系统会将该Service依然设置为started状态，即运行状态，但是不再保存onStartCommand方法传入的intent对象，汤厚Android系统会尝试再次重新创建该Service。
+
+并执行onStartCommand方法，虽然会执行但是获取不到intent信息。
+
+如果你的Service可以在任意时刻运行或结束都没有什么问题，而且不需要intent信息，那么就可以在onStartCommand方法中返回START_STICKY，比如一个用来播放背景音乐功能的Service就适合返回该值。
+
+
+
+### 3. SATRT_REDELIVER_INTENT
+
+如果返回值为START_REDELIVER_INTENT，表示Service运行的进程被Android系统强制杀掉之后，与返回START_STICKY情况一致，Android系统会将才吃创建该Service，并执行onStartCommand回调方法。
+
+但是不同的是，Android系统会再次将Service被杀掉之前最后一次传入onStartCommand方法中的intent再次保留下来并再次传入到重新创建后的Service的onStartCommand方法中。
+
+只要返回START_REDELIVER_INTENT，那么onStartCommand重的intent一定不是null。如果我们的Service需要依赖具体的Intent才能运行（需要从Intent中读取相关数据信息等），并且在强制销毁后有必要重新创建运行，那么这样的Service就适合返回START_REDELIVER_INTENT。
+
+
+
+
+
