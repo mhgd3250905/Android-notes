@@ -90,18 +90,18 @@ public class ShaderTextView extends View {
         return result;
     }
 
+    //获取文字宽度
     private int getTextWidth(String text) {
-        Paint tPaint = new Paint();
         Rect rect = new Rect();
         paint.getTextBounds(text, 0, text.length(), rect);
-        return rect.width();
+        return rect.width() + getPaddingLeft() + getPaddingRight();
     }
 
+    //获取文字高度
     private int getTextHeight(String text) {
-        Paint tPaint = new Paint();
         Rect rect = new Rect();
         paint.getTextBounds(text, 0, text.length(), rect);
-        return rect.height();
+        return rect.height() + getPaddingTop() + getPaddingBottom();
     }
 
 
@@ -110,8 +110,14 @@ public class ShaderTextView extends View {
         super.onDraw(canvas);
 
         canvas.drawColor(Color.parseColor("#232423"));
-
         paint.setAlpha(255);
-        canvas.drawText(text, 0, getTextHeight(text), paint);
+
+        //计算基线
+        Paint.FontMetricsInt fontMetricsInt = paint.getFontMetricsInt();
+        int dy=(fontMetricsInt.bottom-fontMetricsInt.top)/2-fontMetricsInt.bottom;
+        int baseLine=getHeight()/2+dy;
+        int x=getPaddingLeft();
+        //x: 开始的位置 y: 基线
+        canvas.drawText(text, x, baseLine, paint);
     }
 }
