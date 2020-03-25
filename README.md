@@ -35,7 +35,7 @@ MPAndroid学习
 - [Android Chart框架 MPAndroidChart学习笔记13_动态实时数据](./MPAndroid_Study/Android_Chart框架_MPAndroidChart学习笔记13_动态实时数据.md)
 - [Android Chart框架 MPAndroidChart学习笔记14_视口设置](./MPAndroid_Study/Android_Chart框架_MPAndroidChart学习笔记14_视口设置.md)
 - [Android Chart框架 MPAndroidChart学习笔记15_标签设置](./MPAndroid_Study/Android_Chart框架_MPAndroidChart学习笔记15_标签设置.md)
-- [Android Chart框架 MPAndroidChart学习笔记16_数据模型CharData](./MPAndroid_Study/Android_Chart框架_MPAndroidChart学习笔记16_数据模型CharData - 副本.md)
+- [Android Chart框架 MPAndroidChart学习笔记16_数据模型CharData](./MPAndroid_Study/Android_Chart框架_MPAndroidChart学习笔记16_数据模型CharData.md)
 - [Android Chart框架 MPAndroidChart学习笔记17_数据模型DataSet](./MPAndroid_Study/Android_Chart框架_MPAndroidChart学习笔记17_数据模型DataSet.md)
 - [Android Chart框架 MPAndroidChart学习笔记18_数据模型DataSet续](./MPAndroid_Study/Android_Chart框架_MPAndroidChart学习笔记18_数据模型DataSet续.md)
 - [Android Chart框架 MPAndroidChart学习笔记19_视口处理器](./MPAndroid_Study/Android_Chart框架_MPAndroidChart学习笔记19_视口处理器.md)
