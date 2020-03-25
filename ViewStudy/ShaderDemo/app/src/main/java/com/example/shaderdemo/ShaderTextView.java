@@ -12,12 +12,15 @@ import android.graphics.Rect;
 import android.graphics.Shader;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
 @SuppressLint("AppCompatCustomView")
 public class ShaderTextView extends View {
+    private static final String TAG = "ShaderTextView";
+
     private Paint paint;
     int offset = 0;
     LinearGradient linearGradient;
@@ -114,8 +117,9 @@ public class ShaderTextView extends View {
 
         //计算基线
         Paint.FontMetricsInt fontMetricsInt = paint.getFontMetricsInt();
-        int dy=(fontMetricsInt.bottom-fontMetricsInt.top)/2-fontMetricsInt.bottom;
+        int dy=(fontMetricsInt.descent-fontMetricsInt.ascent)/2-fontMetricsInt.descent;
         int baseLine=getHeight()/2+dy;
+        Log.d(TAG, "baseLine: "+baseLine);
         int x=getPaddingLeft();
         //x: 开始的位置 y: 基线
         canvas.drawText(text, x, baseLine, paint);
