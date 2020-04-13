@@ -40,7 +40,11 @@ public class MainActivity extends AppCompatActivity {
 //        rvCard.setLayoutManager(new CardLayoutManager());
         rvCard.setAdapter(adapter);
 //        rvCard.setItemAnimator(new CustomItemAnimator());
-        rvCard.setItemAnimator(new StudyDefaultItemAnimator());
+        CustomDefaultItemAnimator itemAnimator = new CustomDefaultItemAnimator();
+        itemAnimator.setRemoveDuration(500);
+        itemAnimator.setChangeDuration(500);
+        itemAnimator.setAddDuration(500);
+        rvCard.setItemAnimator(itemAnimator);
 //        rvCard.addItemDecoration(new CustomItemDecoration(this));
 
         CardItemTouchHelperCallback itemTouchHelperCallback=new CardItemTouchHelperCallback();

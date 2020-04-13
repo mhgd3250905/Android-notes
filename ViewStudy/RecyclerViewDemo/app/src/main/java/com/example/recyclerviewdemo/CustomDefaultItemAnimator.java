@@ -16,7 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
-public class StudyDefaultItemAnimator extends SimpleItemAnimator {
+public class CustomDefaultItemAnimator extends SimpleItemAnimator {
     private static final String TAG = "StudyDefaultItemAnimato";
 
     private static final boolean DEBUG = false;
@@ -202,6 +202,9 @@ public class StudyDefaultItemAnimator extends SimpleItemAnimator {
     public boolean animateRemove(final RecyclerView.ViewHolder holder) {
         Log.d(TAG, "animateRemove() called");
         resetAnimation(holder);
+        /**
+         * 删除动画设置为由左向右离开
+         */
         mPendingRemovals.add(holder);
         return true;
     }
@@ -211,7 +214,7 @@ public class StudyDefaultItemAnimator extends SimpleItemAnimator {
         final View view = holder.itemView;
         final ViewPropertyAnimator animation = view.animate();
         mRemoveAnimations.add(holder);
-        animation.setDuration(getRemoveDuration()).alpha(0).setListener(
+        animation.setDuration(getRemoveDuration()).translationX(view.getMeasuredWidth()).setListener(
                 new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationStart(Animator animator) {
@@ -221,7 +224,7 @@ public class StudyDefaultItemAnimator extends SimpleItemAnimator {
                     @Override
                     public void onAnimationEnd(Animator animator) {
                         animation.setListener(null);
-                        view.setAlpha(1);
+                        view.setTranslationX(0);
                         dispatchRemoveFinished(holder);
                         mRemoveAnimations.remove(holder);
                         dispatchFinishedWhenDone();
@@ -234,8 +237,12 @@ public class StudyDefaultItemAnimator extends SimpleItemAnimator {
         Log.d(TAG, "animateAdd() called");
         //清除重置所有的动画动作
         resetAnimation(holder);
-        //将当前这个条目透明度设置为0
-        holder.itemView.setAlpha(0);
+
+        /**
+         * 新条目右右向左进入,那么先把item放在右侧
+         */
+        holder.itemView.setTranslationX(holder.itemView.getMeasuredWidth());
+
         /**
          *  mPendingAdditions: 这个集合用来保存在这个方法中设置为透明度0的条目
          *  在runPendingAnimations方法中,会遍历这些条目，并执行对应的动画
@@ -253,7 +260,10 @@ public class StudyDefaultItemAnimator extends SimpleItemAnimator {
         final View view = holder.itemView;
         final ViewPropertyAnimator animation = view.animate();
         mAddAnimations.add(holder);
-        animation.alpha(1).setDuration(getAddDuration())
+        /**
+         * 新条目由右向左移动
+         */
+        animation.translationX(0).setDuration(getAddDuration())
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationStart(Animator animator) {
@@ -262,7 +272,7 @@ public class StudyDefaultItemAnimator extends SimpleItemAnimator {
 
                     @Override
                     public void onAnimationCancel(Animator animator) {
-                        view.setAlpha(1);
+                        view.setTranslationX(0);
                     }
 
                     @Override
@@ -349,6 +359,11 @@ public class StudyDefaultItemAnimator extends SimpleItemAnimator {
             //当条目执行位置变化动画的时候
             return animateMove(oldHolder, fromX, fromY, toX, toY);
         }
+        /**
+         * 更新条目动画为旧条目由右向左离开 新条目由右向左进入
+         * 所以初始状态下旧条目是在原位，而新条目应该在旧条目右边
+         */
+
         //记录旧条目的位置，透明度
         final float prevTranslationX = oldHolder.itemView.getTranslationX();
         final float prevTranslationY = oldHolder.itemView.getTranslationY();
@@ -363,7 +378,7 @@ public class StudyDefaultItemAnimator extends SimpleItemAnimator {
         if (newHolder != null) {
             // 设置新条目的初始位置
             resetAnimation(newHolder);
-            newHolder.itemView.setTranslationX(-deltaX);
+            newHolder.itemView.setTranslationX(-deltaX + oldHolder.itemView.getMeasuredWidth());
             newHolder.itemView.setTranslationY(-deltaY);
             newHolder.itemView.setAlpha(1f);
         }
@@ -377,12 +392,12 @@ public class StudyDefaultItemAnimator extends SimpleItemAnimator {
         final RecyclerView.ViewHolder newHolder = changeInfo.newHolder;
         final View newView = newHolder != null ? newHolder.itemView : null;
         if (view != null) {
-            final ViewPropertyAnimator oldViewAnim = view.animate().setDuration(
-                    getChangeDuration());
+            final ViewPropertyAnimator oldViewAnim = view.animate().setDuration(getChangeDuration());
             mChangeAnimations.add(changeInfo.oldHolder);
-            oldViewAnim.translationX(changeInfo.toX - changeInfo.fromX);
+            //旧条目向左移动
+            oldViewAnim.translationX(changeInfo.toX - changeInfo.fromX - view.getMeasuredWidth());
             oldViewAnim.translationY(changeInfo.toY - changeInfo.fromY);
-            oldViewAnim.alpha(1f).setListener(new AnimatorListenerAdapter() {
+            oldViewAnim.setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animator) {
                     dispatchChangeStarting(changeInfo.oldHolder, true);
@@ -426,6 +441,7 @@ public class StudyDefaultItemAnimator extends SimpleItemAnimator {
 
     /**
      * 终止change方法中产生的待执行的动画集合中和item相关的条目
+     *
      * @param infoList
      * @param item
      */
@@ -458,8 +474,9 @@ public class StudyDefaultItemAnimator extends SimpleItemAnimator {
 
     /**
      * 判断当前关闭item先关的change动画是否是必要的
+     *
      * @param changeInfo change的待执行动画信息
-     * @param item 当前的条目
+     * @param item       当前的条目
      * @return
      */
     private boolean endChangeAnimationIfNecessary(ChangeInfo changeInfo, RecyclerView.ViewHolder item) {
@@ -503,7 +520,7 @@ public class StudyDefaultItemAnimator extends SimpleItemAnimator {
         /**
          * mPendingMoves 中保存的是需要移动的条目动画
          * 譬如remove动画时本已经上滑但是被强制下滑到原始位置的条目动画
-         * 通常在{@link StudyDefaultItemAnimator#runPendingAnimations()} 中执行动画后就会清除
+         * 通常在{@link CustomDefaultItemAnimator#runPendingAnimations()} 中执行动画后就会清除
          * 但是如果动画还没有执行，mPendingMoves 还没有清空，那么就直接将这些需要复原的条目进行复原
          */
         for (int i = mPendingMoves.size() - 1; i >= 0; i--) {
